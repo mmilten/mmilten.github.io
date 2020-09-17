@@ -3,27 +3,19 @@
 
  <html xmlns = "http://www.w3.org/1999/xhtml">
 
-<!-- Information.html
-     Simple page with my information
+<!-- index.md
+     Home Page
      -->
 
- <head><title> Information About Myself </title>
+ <head><title> Home</title>
  </head>
  <body>
-    <h1> Homework Exercise 2.1 </h1>
+    <h1> Markup & Scripting Language Assignments </h1>
     <hr />
-    <h2> Information </h2>
         <p>
-        <em> <strong>The following is my personal infromation in a list format </strong></em>
+        <em> <strong>The following is the home page for all assignments for this class </strong></em>
+        </p>
     <br />
-    </p>
-    <ul>
-        <li> Name: Mohammed Milten </li>
-        <li> Address: 738 Chapelgate Dr, Odenton MD 21113 </li>
-        <li> E-Mail: mmilten1@umbc.edu </li>
-        <li> Major: Information Systems </li>
-        <li> Grade: Senior </li>
-    </ul>
  </body>
  </html>
  
