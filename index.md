@@ -7,6 +7,9 @@
         <em> <strong>The following is the home page for all assignments for this class </strong></em>
         </p>
     <br />
+        <ul>
+            <li> <a href="HW 1.xhtml"> Page 1 </a></li>
+        </ul>
  </body>
  </html>
  
