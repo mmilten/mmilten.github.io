@@ -1,6 +1,4 @@
  <html>
- <head><title> Home</title>
- </head>
  <body>
     <h1> Markup & Scripting Language Assignments </h1>
     <hr />
