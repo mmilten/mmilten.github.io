@@ -9,7 +9,7 @@
         </p>
     <br />
         <ul>
-            <li> <a href="HW 1.xhtml"> Page 1 </a></li>
+            <li> <a href="HW 1.xhtml"> Exercise 2.1 </a></li>
         </ul>
  </body>
  </html>
