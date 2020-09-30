@@ -5,29 +5,29 @@
  <html xmlns = "http://www.w3.org/1999/xhtml">
     <head>
         <title> fibonacci.html </title>
-        <meta charset = "utf-8" />
     </head>
     <body>
-        <h1> Fibonacci Sequence JavaScript</h1>
+        <h1> Fibonacci Sequence JavaScript </h1>
         <script type = "text/javascript">
         //  Compute the Fibonacci number provided by the user
         // Get the input number n from the user
-        var n = prompt("What is the value of 'n'? \n", "");
+        var n = prompt("What is the value of 'n':", " ");
         var a = 1;
         var b = 1;
         var c;
 
-        document.write("The fibonacci series is : ")
+        document.write("The fibonacci series is : ");
         document.write("",a," ");
         document.write("",b," ");
 
-        for (var i = 2; i < n; i++)
-        {   
+        //<![CDATA[
+        for (var i = 2; i < n; i++) {   
             c = a + b;
+            document.write("",c," ");
             a = b;
             b = c;
-            document.write("",c," ");
         }
+        //]]>
         </script>
         <a href="index.html"> Home </a>
     </body>
