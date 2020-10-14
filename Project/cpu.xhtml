@@ -19,53 +19,80 @@
                  font-size: 4em; font-weight: bold; text-align: center;} 
             h2 { font-family: 'Arial'; font-size: 2.5em; text-align: center;}
             h3 { font-family: 'Arial'; font-size: 1.5em; text-align: center;}
-            ul { list-style-type: none;
-                 margin:0;
-                 padding: 0;
-                 width: 10%;
-                 height: 100%;
-                 position: fixed;
-                 overflow: auto;
-                 font-family: 'Arial';
-                 background-color: #9fbeed;
-               }
-            li a { display: block; 
+            ul.a { list-style-type: none;
+                   margin:0;
+                   padding: 0;
+                   width: 10%;
+                   height: 100%;
+                   position: fixed;
+                   overflow: auto;
+                   font-family: 'Arial';
+                   background-color: #9fbeed;
+                 }
+            li.b { display: block; 
                    padding: 8px 16px;
                    color: #333;
                    text-decoration: none;
                  }
             img { border: 1px solid #333;}
+            img { border: 1px solid #333;}
+            .container { display: flex;
+                         flex-direction: row;
+                         justify-content: space-evenly;
+                       }
+            .photos { display: flex;
+                      justify-content: center;
+                      flex-direction: column;
+                      align-items: center;
+                    }
+            .image { display: block;
+                     width: 50%;
+                   }
+            .word { display: block;
+                    width: 100%;
+                    text-align: center;
+                  }
         </style>
     </head>
     <body>
         <div>
-            <ul>
-                <li><a href = "Main.xhtml">Home</a></li>
-                <li><a href = "cases.xhtml">Cases</a></li>
-                <li><a href = "motherboard.xhtml">Motherboard</a></li>
-                <li><a href = "gpu.xhtml">GPU</a></li>
-                <li><a href = "cpu.xhtml">CPU</a></li>
-                <li><a href = "memory.xhtml">Memory</a></li>
-                <li><a href = "storage.xhtml">Storage</a></li>
-                <li><a href = "power.xhtml">Power Supply</a></li>
+            <ul class = "a">
+                <li class = "b"><a href = "Main.xhtml">Home</a></li>
+                <li class = "b"><a href = "cases.xhtml">Cases</a></li>
+                <li class = "b"><a href = "motherboard.xhtml">Motherboard</a></li>
+                <li class = "b"><a href = "gpu.xhtml">GPU</a></li>
+                <li class = "b"><a href = "cpu.xhtml">CPU</a></li>
+                <li class = "b"><a href = "memory.xhtml">Memory</a></li>
+                <li class = "b"><a href = "storage.xhtml">Storage</a></li>
+                <li class = "b"><a href = "power.xhtml">Power Supply</a></li>
             </ul>
         </div>
         <div style= "margin-left: 10%; padding: 1px 16px;">
             <h1> PC World </h1>
             <hr />
-            <h2> Central Processing Unit (CPU) </h2>
+            <h2> Central Processing Unit </h2>
             <p class = "aligncenter">
-                <img src = "Resources/Computer.jpg" height = "334" width = "500" alt = "Picture of inside of a gaming computer" />
+                <img src = "Resources/cpu.png" height = "334" width = "700" alt = "Picture of a GPU" />
             </p>
-            <h3> AMD </h3>
             <p class = "minor" style = "margin-left: 100px; margin-right: 100px;">
-                Info
+                The central processing unit (CPU) of a computer is the core component of a computer, it's the brains
+                of the computer. This is a chip that sits in a socket in the motherboard. The CPU takes instructions 
+                from a program or application and performs calculations. CPUs have a number of cores and clock speed
+                that determines the performances of its calculations. All modern CPUs today are atleast dual-core, 
+                while cores can go to quad-core, six, eight, 10, 12, and 16-core CPUs. Right now there are two popular
+                brands of CPUs on the market the Intel and AMD line of chipsets.
             </p>
-            <h3> Intel </h3>
-            <p class = "minor" style = "margin-left: 100px; margin-right: 100px;">   
-                Info
-            </p>
+            <h3> Brands </h3>
+            <div class = "container">
+                <div class = "photos">
+                    <img class = "image" src = "Resources/amd cpu.jpg"  alt = "Picture of an AMD GPU" />
+                    <span class = "word">AMD</span>
+                </div>
+                <div class = "photos">
+                    <img class = "image" src = "Resources/intel cpu.jpg"  alt = "Picture of a nVidia GPU" />
+                    <span class = "word">Intel</span>
+                </div>
+            </div>
         </div>  
     </body>
  </html>
- 

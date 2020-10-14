@@ -19,35 +19,51 @@
                  font-size: 4em; font-weight: bold; text-align: center;} 
             h2 { font-family: 'Arial'; font-size: 2.5em; text-align: center;}
             h3 { font-family: 'Arial'; font-size: 1.5em; text-align: center;}
-            ul { list-style-type: none;
-                 margin:0;
-                 padding: 0;
-                 width: 10%;
-                 height: 100%;
-                 position: fixed;
-                 overflow: auto;
-                 font-family: 'Arial';
-                 background-color: #9fbeed;
-               }
-            li a { display: block; 
+            ul.a { list-style-type: none;
+                   margin:0;
+                   padding: 0;
+                   width: 10%;
+                   height: 100%;
+                   position: fixed;
+                   overflow: auto;
+                   font-family: 'Arial';
+                   background-color: #9fbeed;
+                 }
+            li.b { display: block; 
                    padding: 8px 16px;
                    color: #333;
                    text-decoration: none;
                  }
             img { border: 1px solid #333;}
+            .container { display: flex;
+                         flex-direction: row;
+                         justify-content: space-evenly;
+                       }
+            .photos { display: flex;
+                      justify-content: center;
+                      flex-direction: column;
+                      align-items: center;
+                    }
+            .image { display: block;
+                     width: 50%;
+                   }
+            .word { display: block;
+                    width: 100%;
+                    text-align: center;
+                  }
         </style>
     </head>
     <body>
         <div>
-            <ul>
-                <li><a href = "Main.xhtml">Home</a></li>
-                <li><a href = "cases.xhtml">Cases</a></li>
-                <li><a href = "motherboard.xhtml">Motherboard</a></li>
-                <li><a href = "gpu.xhtml">GPU</a></li>
-                <li><a href = "cpu.xhtml">CPU</a></li>
-                <li><a href = "memory.xhtml">Memory</a></li>
-                <li><a href = "storage.xhtml">Storage</a></li>
-                <li><a href = "power.xhtml">Power Supply</a></li>
+            <ul class = "a">
+                <li class = "b"><a href = "Main.xhtml">Home</a></li>
+                <li class = "b"><a href = "cases.xhtml">Cases</a></li>
+                <li class = "b"><a href = "motherboard.xhtml">Motherboard</a></li>
+                <li class = "b"><a href = "gpu.xhtml">GPU</a></li>
+                <li class = "b"><a href = "cpu.xhtml">CPU</a></li>
+                <li class = "b"><a href = "memory.xhtml">Memory</a></li>
+                <li class = "b"><a href = "storage.xhtml">Storage</a></li>
+                <li class = "b"><a href = "power.xhtml">Power Supply</a></li>
             </ul>
         </div>
         <div style= "margin-left: 10%; padding: 1px 16px;">
@@ -55,7 +71,7 @@
             <hr />
             <h2> Graphical Processing Unit </h2>
             <p class = "aligncenter">
-                <img src = "Resources/GPU.jpg" height = "334" width = "500" alt = "Picture of inside of a gaming computer" />
+                <img src = "Resources/GPU.jpg" height = "334" width = "500" alt = "Picture of a GPU" />
             </p>
             <p class = "minor" style = "margin-left: 100px; margin-right: 100px;">
                 The graphics processing unit (GPU) of a computer often refered to as a graphics card or video card. Every computer
@@ -63,14 +79,17 @@
                 the CPU to do its tasks. There are two types of GPUs: integrated or discrete. Right now the two most popular 
                 manufacturer for GPUs are AMD and nVidia where each has there own ranges of performances and software.
             </p>
-            <h3> AMD </h3>
-            <p class = "aligncenter">
-                <img src = "Resources/amd.jpg" height = "334" width = "500" alt = "Picture of inside of a gaming computer" />
-            </p>
-            <h3> nVidia </h3>
-            <p class = "aligncenter">
-                <img src = "Resources/nvidia.jpg" height = "334" width = "500" alt = "Picture of inside of a gaming computer" />
-            </p>
+            <h3> Brands </h3>
+            <div class = "container">
+                <div class = "photos">
+                    <img class = "image" src = "Resources/amd.jpg"  alt = "Picture of an AMD GPU" />
+                    <span class = "word">AMD</span>
+                </div>
+                <div class = "photos">
+                    <img class = "image" src = "Resources/nvidia.jpg"  alt = "Picture of a nVidia GPU" />
+                    <span class = "word">nVidia</span>
+                </div>
+            </div>
         </div>  
     </body>
  </html>
