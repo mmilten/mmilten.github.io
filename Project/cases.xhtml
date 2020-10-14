@@ -1,7 +1,7 @@
 <?xml version = "1.0" encoding = "utf-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml1-strict.dtd">
 <!-- cases.xhtml
-     Home web page of PC World
+     web page for information on cases
      -->
  <html lang = "en" xmlns = "http://www.w3.org/1999/xhtml">
     <head>
@@ -19,17 +19,17 @@
                  font-size: 4em; font-weight: bold; text-align: center;} 
             h2 { font-family: 'Arial'; font-size: 2.5em; text-align: center;}
             h3 { font-family: 'Arial'; font-size: 1.5em; text-align: center;}
-            ul { list-style-type: none;
-                 margin:0;
-                 padding: 0;
-                 width: 10%;
-                 height: 100%;
-                 position: fixed;
-                 overflow: auto;
-                 font-family: 'Arial';
-                 background-color: #9fbeed;
-               }
-            li a { display: block; 
+            ul.a { list-style-type: none;
+                   margin:0;
+                   padding: 0;
+                   width: 10%;
+                   height: 100%;
+                   position: fixed;
+                   overflow: auto;
+                   font-family: 'Arial';
+                   background-color: #9fbeed;
+                 }
+            li.b { display: block; 
                    padding: 8px 16px;
                    color: #333;
                    text-decoration: none;
@@ -39,32 +39,31 @@
     </head>
     <body>
         <div>
-            <ul>
-                <li><a href = "Main.xhtml">Home</a></li>
-                <li><a href = "cases.xhtml">Cases</a></li>
-                <li><a href = "motherboard.xhtml">Motherboard</a></li>
-                <li><a href = "gpu.xhtml">GPU</a></li>
-                <li><a href = "cpu.xhtml">CPU</a></li>
-                <li><a href = "memory.xhtml">Memory</a></li>
-                <li><a href = "storage.xhtml">Storage</a></li>
-                <li><a href = "power.xhtml">Power Supply</a></li>
+            <ul class = "a">
+                <li class = "b"><a href = "Main.xhtml">Home</a></li>
+                <li class = "b"><a href = "cases.xhtml">Cases</a></li>
+                <li class = "b"><a href = "motherboard.xhtml">Motherboard</a></li>
+                <li class = "b"><a href = "gpu.xhtml">GPU</a></li>
+                <li class = "b"><a href = "cpu.xhtml">CPU</a></li>
+                <li class = "b"><a href = "memory.xhtml">Memory</a></li>
+                <li class = "b"><a href = "storage.xhtml">Storage</a></li>
+                <li class = "b"><a href = "power.xhtml">Power Supply</a></li>
+                <li class = "b"><a href = "about.xhtml">About</a></li>
             </ul>
         </div>
         <div style= "margin-left: 10%; padding: 1px 16px;">
             <h1> PC World </h1>
             <hr />
             <h2> Cases </h2>
+            <p class = "aligncenter">
+                <img src = "Resources/computer case.jpg" height = "334" width = "500" alt = "Sizes of cases" />
+            </p>
             <p class = "minor" style = "margin-left: 100px; margin-right: 100px;">
                 The first thing you will need to build a computer is the case in which all your other parts are going to be in. 
                 There is a variety of sizes and styles of cases one can choose from. One of the biggest consideration when choosing
                 between the different sizes of cases is the number of slots and number of devices one would like to have. But the 
                 most important factor is the compatiblity of a case with motherboard size.
             </p>
-
-            <p class = "aligncenter">
-                <img src = "Resources/cases.png" height = "334" width = "500" alt = "Sizes of cases" />
-            </p>
-
             <h3> Sizes </h3>
             <ol style = "margin-left: 100px; margin-right: 100px;">
                 <li> Full Tower 
@@ -92,6 +91,9 @@
                     </ol>
                 </li>
             </ol>
+            <p class = "aligncenter">
+                <img src = "Resources/cases.png" height = "334" width = "500" alt = "Sizes of cases" />
+            </p>
         </div>  
     </body>
  </html>
