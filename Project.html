@@ -1,0 +1,452 @@
+<!DOCTYPE xhtml>
+<html>
+<head>
+    <title>Abdullahs Pizza Shop</title>
+    <!-- JQUERY AREA -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- JSON DATA AREA -->
+    <script>
+        var menuItems = [
+            {"itemID": 1, "pizzaType": "Covid Pizza", "cost": 10.00},
+            {"itemID": 2, "pizzaType": "Biden pizza", "cost": 20.00},
+            {"itemID": 3, "pizzaType": "Democratic Surprise", "cost": 10.00},
+            {"itemID": 4, "pizzaType": "2020 Pizza", "cost": 10.00},
+            {"itemID": 5, "pizzaType": "Stuff crust", "cost": 10.00},
+        ];
+    </script>
+    <!-- META DATA AREA -->
+    <meta charset="utf-8" />
+    <meta name="description" content="Abdullah Pizza Shop" >
+    <meta name="keywords" content=" Abdullah Pizza" >
+    <meta name="author" content="Abdullah Pizza Shop" >
+    <style type="text/css">
+        body, html {
+            height: 100%;
+        }
+    body, h1, h2, h3, h4, h5, h6 {
+        font-family: sans-serif;
+        text-align: center;
+        color: #333333;
+    }
+    /*Navigation CSS*/
+    ul.nav {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333;
+    }
+    li.nav {
+        float: left;
+    } 
+    li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 25px 50px 25px 50px;
+        text-decoration: none;
+    }
+    li a:hover {
+        background-color: #ff5c33;
+        color: #333333;
+    }
+    nav {
+        background-color: #4d4d4d;
+        position: fixed;
+        top: 0;
+        width: 100%;
+    }
+    /*HEADER CSS*/
+    .bgimg {
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-image:
+        url("https://media.timeout.com/images/100633783/image.jpg");
+        min-height: 90%;
+    }
+    .imgText {
+        position: absolute;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #e6e6e6;
+        font-size: 500%;
+        font-family: sans-serif;
+    }
+    .headerBtn {
+        position: absolute;
+        top: 60%;
+        left: 39%;
+        background-color: #333333; /* blackish */
+        border: none;
+        padding: 20px 20px 20px 20px;
+        color: #e6e6e6;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 30px;
+        font-family: sans-serif;
+    }
+    .headerBtn:hover {
+        background-color: #ff5c33;
+        color: #333333;
+    }
+    /*Google map css*/
+    .googleMapAbout {
+        width: 100%;
+        height: 75%;
+        background:yellow;
+    }
+    /*ABOUT CSS*/
+        .aboutHours {
+        top: 50%;
+        left: 50%;
+        text-align: center;
+        color: #333333;
+    }
+    .aboutParagraph {
+        text-align: center;
+        font-size: 150%;
+    }
+    th {
+        text-align: left;
+    }
+    i {
+        color: #ff5c33;
+    }
+    /*CONTACT CSS*/
+    input[type=text], select, textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        margin-top: 6px;
+        margin-bottom: 16px;
+        resize: vertical;
+        font-size: 100%;
+    }
+    input[type=submit] {
+        font-size: 100%;
+        background-color: #333333;
+        color: white;
+        padding: 16px 25px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    input[type=submit]:hover {
+        background-color: #ff5c33;
+    }
+    .container {
+        border-radius: 5px;
+        background-color: #f2f2f2;
+        padding: 20px;
+    }
+    .contactThankYou {
+        display: none;
+        color: green;
+    }
+    /*MENU CSS*/
+    #menu {
+        font-size: 100%;
+    }
+    .menuContainer {
+        position: relative;
+        width: 25%;
+        display: inline-block;
+    }
+    .menuImage {
+        display: block;
+        width: 75%;
+        height: auto;
+        border-radius: 50%;
+    }
+    .menuOverlay {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100%;
+        width: 75%;
+        opacity: 0;
+        transition: .5s ease;
+        background-color: #333333;
+        border-radius: 50%;
+    }
+    .menuContainer:hover .menuOverlay {
+        opacity: 1;
+    }
+    .menuText {
+        color: white;
+        font-size: 20px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+    }
+    /* TERMS CSS */
+    .termsText {
+        padding-left: 25%;
+        padding-right: 25%;
+        text-align: left;
+    }
+    /* SITE CSS */
+    .siteText {
+        display: block;
+        font-size: 125%;
+        padding-top: 1%;
+        padding-bottom: 1%;
+        text-decoration: none;
+        color: #333333;
+    }
+    </style>
+</head>
+<body>
+     <!-- NAVIGATION DIV -->
+    <nav>
+        <div>
+            <ul class="nav">
+                <li class="nav"><a href="#home" id="navHome" class="links" rel="home">Home</a></li>
+                <li class="nav"><a href="#menu" id="navMenu" class="links" rel="menu">Menu</a></li>
+                <li class="nav"><a href="#about" id="navAbout" class="links" rel="about">About</a></li>
+                <li class="nav"><a href="#contact" id="navContact" class="links" rel="contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+    <!-- HEADER AREA WITH IMAGE -->
+    <header>
+        <div class="bgimg">
+            <!-- Image is here -->
+        </div>
+        <div class="imgText"> Pizza Shop </div>
+        <div>
+            <a href="#home" id="showMe" class="headerBtn" rel="menu">Show me the pizza!</a>
+        </div>
+    </header>
+    <!-- HOME AREA -->
+    <div style="display: block" id="home"></div>
+    <!-- MENU AREA -->
+    <div style="display:none" id="menu">
+        <h4>Scroll down for pizza</h4>
+        <h1 style="padding-top:80px">Get Ready To Change Your Life!</h1>
+        <p>Know before you go!</p>
+        <p>(Scroll over to see menu item names)</p>
+        <div class="menuContainer">
+            <img src="https://i.pinimg.com/236x/af/f1/2b/aff12b014bb5138d417dcf330adb2b52.jpg" alt="Pizza1" class="menuImage">
+            <div class="menuOverlay">
+            <div class="menuText"> Tomato Dream </div>
+        </div>
+    </div>
+
+    <div class="menuContainer">
+        <img src="https://i.pinimg.com/236x/ed/a6/05/eda6050d95d2826662a8f56b4320873e--caprese-pizza-pints.jpg" alt="Pizza1" class="menuImage">
+        <div class="menuOverlay">
+        <div class="menuText"> Paneer Pizza </div>
+        </div>
+    </div>
+
+    <div class="menuContainer">
+        <img src="https://i.pinimg.com/736x/0b/0e/18/0b0e184bf99981a7aae425652e5abb6a--thaipizza-pints.jpg" alt="Pizza1" class="menuImage">
+        <div class="menuOverlay">
+        <div class="menuText"> 4 Cheese Surprise</div>
+        </div>
+    </div>
+
+    <div class="menuContainer">
+        <img src="https://i.pinimg.com/236x/15/a1/2d/15a12d398fde3d5cd90f9d6341000f15--roasted-garlic-mashed-potatoes-pizza-dough.jpg" alt="Pizza1" class="menuImage">
+        <div class="menuOverlay">
+        <div class="menuText">Nacho Pizza</div>
+        </div>
+    </div>
+
+    <div class="menuContainer">
+        <img src="https://i.pinimg.com/236x/3e/06/4e/3e064e365638bd0ba25e6b69b17d4415--pesto-pizza-pints.jpg" alt="Pizza1" class="menuImage">
+        <div class="menuOverlay">
+        <div class="menuText">Two-Face</div>
+        </div>
+    </div>
+
+    <hr>
+    </div>
+    <!-- ABOUT AREA -->
+    <div style="display:none" id="about">
+        <h1 style="padding-top:80px">About Us</h1>
+        <!-- About paragraph first, then reviews, then map, then hours of
+        operation -->
+        <div class="aboutParagraph">
+            Pizza shop was founded on the idea that pizza is the source of all
+            happiness.
+            <br>
+            <br>
+            <hr>
+            <h4 style="text-align:center">Customer Reviews</h4>
+            <i>"I was inspired to create my latest album after eating Pizza shop delicious pizza."<br>-Beyonc&eacute;</i><br>
+            <!-- Wouldn't be Beyonce without the accent over the e! -->
+            <br>
+            <i>"I won the lottery after eating here! Coincidence? I think not!"<br>-A Billionaire</i>
+            <br>
+            <br>
+            <i>"This pizza cured my diabetes."<br>-Anonymous</i>
+            <br>
+            <br>
+            <p style="font-weight: bold">Can you find us? (hint: drag the map towards the bottom right)</p>
+        </div>
+        <div id="map" class="googleMapAbout">
+            <script>
+                function myMap() {
+                    var mapOptions = {
+                        zoom: 13, scrollwheel: false, draggable: true,
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                    };
+                    var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+                    myCenter = new google.maps.LatLng(38.903286, -77.064832) //location
+                    //marker setting works, but map won't center properly :(
+                    var marker = new google.maps.Marker({position: myCenter, map:map});
+                    map.setCenter(myCenter);
+                    }
+            </script>
+            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyrWKe3_0hitaQES4mPstS_786npKv0g0&callback=myMap"></script>
+        </div>
+        <div>
+            <h2 style="text-align:left">Hours of Operation</h2>
+            <div class="aboutHours">
+                <table>
+                    <tr><th>Monday</th><td>11am - 10pm</td></tr>
+                    <tr><th>Tuesday</th><td>11am - 10pm</td></tr>
+                    <tr><th>Wednesday</th><td>11am - 10pm</td></tr>
+                    <tr><th>Thursday</th><td>11am - 10pm</td></tr>
+                    <tr><th>Friday</th><td>11am - 12am</td></tr>
+                    <tr><th>Saturday</th><td>11am - 2am</td></tr>
+                    <tr><th>Sunday</th><td><i>Closed</i></td></tr>
+                </table>
+            </div>
+            <hr>
+        </div>
+    </div>
+    <!-- CONTACT AREA -->
+    <div style="display:none" id="contact">
+        <h1 style="padding-top:130px">Contact Us</h1>
+        <div class="container">
+            <form id="form">
+                <input type="text" id="fname" name="firstname" placeholder="Enter name">
+                <input type="text" id="lname" name="lastname" placeholder="Enter email">
+                <textarea id="subject" name="subject" placeholder="Write a message" style="height:200px"></textarea>
+                <input type="submit" value="Submit" placeholder="Submit">
+            </form>
+            <div id="thankYou" class="contactThankYou">Please wait...</div>
+        </div>
+    </div>
+    <!-- TERMS AREA -->
+    <div style="display:none" id="terms">
+        <h1 style="padding-top:130px">Terms of Use</h1>
+        <div class="termsText">
+            <p> All prices displayed on this Site are in U.S. Dollars and are
+                valid and effective only within the United States. Pizza shop reserves the
+                right, without prior notice and without incurring any obligations, to
+                discontinue or change the specifications of any products or services offered on
+                this Site.
+            </p>
+        </div>
+    </div>
+    <!-- SITE AREA -->
+    <div style="display: none" id="site">
+        <h1 style="padding-top:285px">Site Map</h1>
+        <a href="#home" id="siteHome" rel="home" class="siteText">Home</a>
+        <a href="#menu" id="siteMenu" rel="menu" class="siteText">Menu</a>
+        <a href="#about" id="siteAbout" rel="about" class="siteText">About</a>
+        <a href="#contact" id="siteContact" rel="contact" class="siteText">Contact</a>
+        <a href="#terms" id="siteTerms" class="siteText">Terms</a>
+    </div>
+    <!-- FOOTER AREA -->
+    <footer>
+        <div>
+            <ul class="nav">
+                <li class="nav"><a href="#terms" id="ftrTerms">Terms</a></li>
+                <li class="nav"><a href="#site" id="ftrSite">Site</a></li>
+            </ul>
+        </div>
+    </footer>
+    <!-- JAVASCRIPT AREA -->
+    <script>
+        //When the DOM document is loaded in the browser
+        $(document).ready(function(){
+            //When home link is clicked, show home area
+            $("#navHome").click(function(){
+                $("#home").show();
+                $("#menu, #about, #terms, #site, #contact").hide();
+            });
+            //When menu link is clicked, show menu area
+            $("#navMenu").click(function(){
+                $("#menu").show();
+                $("#home, #about, #terms, #site, #contact").hide();
+            });
+            //When show me the pizza! link is clicked, show menu area
+            $("#showMe").click(function(){
+                $("#menu").show();
+                $("#home, #about, #terms, #site, #contact").hide();
+            });
+
+            $("#navAbout").click(function(){
+                $("#about").show();
+                google.maps.event.trigger(map, "resize"); //in order to display the google map after div becomes un-hidden
+                $("#home, #menu, #terms, #site, #contact").hide();
+            });
+            $("#navContact").click(function(){
+                 $("#contact").show();
+                $("#home, #menu, #about, #terms, #site").hide();
+            });
+            //After Submit button on contact page is clicked
+            $('#form').submit(function() {
+                $('#thankYou').show();
+                $("#menu, #about, #terms, #site, #contact").hide();
+                // $("#contact").show();
+            });
+            //When terms link is clicked, show terms area
+            $("#ftrTerms").click(function(){
+                $("#terms").show();
+                $("#home, #menu, #about, #site, #contact").hide();
+            });
+            //When site link is clicked, show site area
+            $("#ftrSite").click(function(){
+                $("#site").show();
+                $("#home, #menu, #about, #terms, #contact").hide();
+            });
+            //When home link on SITE MAP PAGE is clicked, show menu area
+            $("#siteHome").click(function(){
+                $("#home").show();
+                $("#menu, #about, #terms, #site, #contact").hide();
+            });
+            //When menu link on SITE MAP PAGE is clicked, show menu area
+            $("#siteMenu").click(function(){
+                $("#menu").show();
+                $("#home, #about, #terms, #site, #contact").hide();
+            });
+            //When about link on SITE MAP PAGE is clicked, show menu area
+            $("#siteAbout").click(function(){
+                $("#about").show();
+                google.maps.event.trigger(map, "resize"); //in order to display the google map after div becomes un-hidden
+                $("#home, #menu, #terms, #site, #contact").hide();
+            });
+            //When contact link on SITE MAP PAGE is clicked, show menu area
+            $("#siteContact").click(function(){
+                $("#contact").show();
+                $("#home, #about, #terms, #site, #menu").hide();
+            });
+            //When terms link on SITE MAP PAGE is clicked, show menu area
+            $("#siteTerms").click(function(){
+                $("#terms").show();
+                $("#home, #about, #menu, #site, #contact").hide();
+            });
+            //Load the menu area with JSON data
+            for (var i in menuItems) {
+                $("#menu").append("<div>"
+                + "Type: " + menuItems[i].pizzaType
+                + "Cost: " + menuItems[i].cost.toFixed(2)
+                + "</div>");
+            }
+        });
+    </script>
+</body>
+</html>
