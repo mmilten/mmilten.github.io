@@ -1,0 +1,286 @@
+Task 9
+/** Creates a function that returns the direction that two stations who are on the same line
+    @param origin_station The given station name of an origin station
+    @param destination_station The given station name of a destination station
+    @param l_id The given ID of the line these two stations are on
+    @return line_direction The direction the two stations
+*/
+CREATE OR REPLACE FUNCTION return_direction(origin_station VARCHAR, destination_station VARCHAR, l_id NUMBER) 
+return number
+is
+  origin_seq line_station.sequence_number%type; -- variable to hold sequence of orgin station
+  destination_seq line_station.sequence_number%type; -- variable to hold sequence of destination station
+  line_direction schedule.direction%type; -- variable to hold line direction
+BEGIN
+  -- gets the sequence number of the origin station
+  SELECT ls.sequence_number
+  INTO origin_seq
+  FROM schedule sc, station s, train_line tl, line_station ls
+  WHERE s.station_name = origin_station
+  AND sc.line_id = l_id
+  AND tl.line_id = ls.line_id
+  AND ls.line_id = sc.line_id
+  AND ls.station_id = s.station_id;
+  --gets the sequence number of the destination station
+  SELECT ls.sequence_number
+  INTO destination_seq
+  FROM schedule sc, station s, train_line tl, line_station ls
+  WHERE s.station_name = destination_station
+  AND sc.line_id = l_id
+  AND tl.line_id = ls.line_id
+  AND ls.line_id = sc.line_id
+  AND ls.station_id = s.station_id;
+  -- compare the sequence number of the two stations to return the direction
+  IF origin_seq < destination_seq THEN
+    line_direction := 1;
+    return line_direction;
+  ELSE
+    line_direction := 2;
+    return line_direction;
+  END IF;
+EXCEPTION
+  WHEN no_data_found THEN
+    dbms_output.put_line('no rows found');
+END;
+
+SET SERVEROUTPUT ON;
+declare
+  line_direction number;
+begin
+  line_direction := return_direction('Owings Mills Station', 'College Park Station', 1);
+  dbms_output.put_line('Line direction is: ' || line_direction);
+end;
+
+SELECT s.station_name, tl.line_id, ls.sequence_number
+FROM schedule sc, station s, train_line tl, line_station ls
+WHERE sc.line_id = tl.line_id
+AND tl.line_id = ls.line_id
+AND ls.line_id = sc.line_id
+AND ls.station_id = s.station_id
+ORDER BY tl.line_id, ls.sequence_number;
+
+Task 10
+/** Creates a procedure that returns schedules a passenger can take from origin station to destination
+    station
+    @param s_time The start time
+    @param gap A time gap
+    @param o_station The origin station name
+    @param d_station The destination station name
+    @param l_name The name of the line both stations are on
+*/
+CREATE OR REPLACE PROCEDURE print_schedule(s_time INTERVAL DAY TO SECOND, gap INTERVAL DAY TO SECOND, 
+	o_station VARCHAR, d_station VARCHAR, l_name VARCHAR)
+AS
+  cursor c1 IS
+    -- cursor definition
+    SELECT sc.schedule_id, s.station_name, ss.schedule_arrival
+    FROM schedule sc, station s, schedule_station ss, train_line tl
+    WHERE ss.schedule_arrival BETWEEN s_time AND s_time+gap
+    AND s.station_name IN (o_station, d_station)
+    AND tl.line_name = l_name
+    AND sc.schedule_id = ss.schedule_id
+    AND sc.line_id = tl.line_id
+    AND s.station_id = ss.station_id; 
+  s_id schedule.schedule_id%type; -- variable to hold schedule_id
+  s_name station.station_name%type; -- variable to hold station_name
+  s_arrival schedule_station.schedule_arrival%type; -- variable to hold schedule_arrival
+  s_direction number; -- variable to hold direction
+  o_counter number; -- variable to hold counter for origin station
+  d_counter number; -- variable to hold counter for destination station
+  l_counter number; -- variable to hold counter for line name
+  l_id train_line.line_id%type; -- variable to hold line id
+  sc_direction schedule.direction%type;
+BEGIN
+  OPEN c1; -- open cursor
+  LOOP
+    -- counts if origin station name exists
+    SELECT COUNT(s.station_name)
+    INTO o_counter
+    FROM station s
+    WHERE s.station_name = o_station;
+    -- counts if destination station name exists
+    SELECT COUNT(s.station_name)
+    INTO d_counter
+    FROM station s
+    WHERE s.station_name = d_station;
+    -- counts if line name exists
+    SELECT COUNT(tl.line_name)
+    INTO l_counter
+    FROM train_line tl
+    WHERE tl.line_name = l_name;
+    -- condition for if station names exists
+    IF o_counter = 0 OR d_counter = 0 THEN
+      dbms_output.put_line('Wrong station name');
+      EXIT;
+    END IF;
+    -- condition for if line name exists
+    IF l_counter = 0 THEN
+      dbms_output.put_line('Wrong line name');
+      EXIT;
+    END IF;
+    -- gets line id for line name
+    SELECT tl.line_id
+    INTO l_id
+    FROM train_line tl
+    WHERE tl.line_name = l_name;
+    -- calls task 9 function for direction 
+    s_direction := return_direction(o_station, d_station, l_id);
+  FETCH c1 into s_id, s_name, s_arrival; -- fetch
+  EXIT WHEN c1%NOTFOUND; -- exit condition
+    -- gets line direction from schedule with line id
+    SELECT sc.direction
+    INTO sc_direction
+    FROM schedule sc, train_line tl
+    WHERE tl.line_id = sc.line_id
+    AND sc.schedule_id = s_id;
+    IF s_direction = sc_direction THEN
+      dbms_output.put_line('Schedule ID: ' || s_id || ', Station Name: ' || s_name || ', Arrival: ' || s_arrival); --         prints
+    END IF;
+  END LOOP;
+  CLOSE c1;
+END;
+
+
+SET SERVEROUTPUT ON;
+EXEC print_schedule(INTERVAL '6' HOUR, INTERVAL '2' HOUR, 'Owings Mills Station', 'Greenbelt Station', 'Red line');
+	
+  
+SELECT sc.schedule_id, s.station_name, ss.schedule_arrival, tl.line_name
+FROM schedule sc, station s, schedule_station ss, train_line tl
+WHERE sc.schedule_id = ss.schedule_id
+AND sc.line_id = tl.line_id
+AND s.station_id = ss.station_id
+ORDER BY ss.schedule_id, ss.schedule_arrival;  	
+
+Task 11
+/** Creates a procedure that returns transfer stations a passenger can take between two lines
+    @param origin_station The origin station name
+    @param destination_station The destination station name
+*/
+CREATE OR REPLACE PROCEDURE find_transfer_stations (origin_station VARCHAR2, destination_station VARCHAR2) IS
+  origin_check NUMBER;
+  origin_id station.station_id%type;
+  origin_line_id train_line.line_id%type;
+  destination_check NUMBER;
+  destination_id station.station_id%type;
+  destination_line_id train_line.line_id%type;
+  transfer_line_one train_line.line_name%type;
+  transfer_line_two train_line.line_name%type;
+  transfer_direction_one schedule.direction%type;
+  transfer_direction_two schedule.direction%type;
+  wrong_station EXCEPTION;
+  different_line EXCEPTION; 
+  -- get transfer station name that are in both line
+  CURSOR c1 IS 
+    SELECT
+    s.station_name,
+    ls.station_id, COUNT(*) 
+    FROM line_station ls
+    JOIN station s on s.station_id = ls.station_id
+    GROUP BY ls.station_id, s.station_name
+    HAVING COUNT(*) > 1;
+  -- record for c1
+  c1_rec c1%rowtype;
+BEGIN
+  -- checks to see if origin and destination station exists
+  SELECT COUNT(*) INTO origin_check FROM station WHERE station_name = origin_station;
+  SELECT COUNT(*) INTO destination_check FROM station WHERE station_name = destination_station;
+  IF origin_check = 1 AND destination_check = 1 THEN 
+    -- get station id for origin and estination stations
+    SELECT s.station_id INTO origin_id FROM station s WHERE station_name = origin_station;
+    SELECT s.station_id INTO destination_id FROM station s WHERE station_name = destination_station;
+    -- get line id for origin station and destination station
+    SELECT line_id INTO origin_line_id FROM line_station WHERE station_id = origin_id;  
+    SELECT line_id INTO destination_line_id from line_station WHERE station_id = destination_id;
+    -- if origin line and destination line are not on the same line
+    IF (origin_line_id != destination_line_id) THEN
+        OPEN c1;
+          LOOP
+          FETCH c1 INTO c1_rec; 
+          EXIT WHEN c1%NOTFOUND; -- exit condition
+            IF (origin_line_id = 1 OR destination_line_id = 1) 
+              THEN 
+                transfer_line_one := 'Red line'; 
+                transfer_line_two := 'Green line'; 
+              ELSE 
+                transfer_line_one := 'Green line'; 
+                transfer_line_two := 'Red line'; 
+              END IF;
+            -- get direction
+            If origin_id < c1_rec.station_id THEN
+              transfer_direction_one := 1;
+              transfer_direction_two := 2;
+            ELSE
+              transfer_direction_one := 2;
+              transfer_direction_two := 1;
+            END IF;
+            dbms_output.put_line('Take '|| transfer_line_one || ' in direction ' || transfer_direction_one || ' at ' || c1_rec.station_name
+             || ' and then take ' || transfer_line_two || ' in direction ' || transfer_direction_two);     
+          END LOOP;
+        CLOSE c1;
+    ELSE
+      RAISE different_line;
+    END IF;  
+  ELSE
+    RAISE wrong_station;
+  END IF;
+EXCEPTION
+  -- user-defined exceptions
+  WHEN wrong_station THEN dbms_output.put_line('Wrong station name.');
+  WHEN different_line THEN dbms_output.put_line('The stations are on the same line');  
+END;
+
+SET SERVEROUTPUT ON;
+EXECUTE find_transfer_stations('Owings Mills Station', 'Rockville Station');
+    
+Task 12
+/** Creates a procedure to print out total number of accounts, cards, spending
+    average number of trips per account, station that appears most often as 
+    entrance and exit in trips
+*/
+CREATE OR REPLACE PROCEDURE total_numbers IS
+  -- Declare variables
+  total_acc NUMBER;
+  total_cards NUMBER;
+  total_spending NUMBER;
+  avg_trip NUMBER;
+  en_station VARCHAR2(50);
+  ex_station VARCHAR2(50);
+
+BEGIN
+    -- total # of accounts
+    SELECT COUNT(DISTINCT rider_id) INTO total_acc FROM riders;
+    dbms_output.put_line('The total number of accounts is: ' || total_acc);
+    
+    -- total # of cards
+    SELECT COUNT(DISTINCT card_id) INTO total_cards FROM metro_card;
+    dbms_output.put_line('The total number of cards is: ' || total_cards);
+
+    -- total spending
+    SELECT SUM(cost) INTO total_spending FROM trips;
+    dbms_output.put_line('The total spending is: $' || total_spending);
+
+    -- average trips per person
+    SELECT avg(DISTINCT card_id) INTO avg_trip FROM trips; 
+    dbms_output.put_line('Average number of trips per account is: ' || avg_trip);
+    
+    -- top entrance station
+    select station_name INTO en_station from trips, station
+    WHERE station.station_id = trips.entrance_id
+    GROUP BY station_name 
+    HAVING COUNT(*) = (SELECT MAX(COUNT(*)) FROM trips GROUP BY entrance_id);
+    dbms_output.put_line('Entrance station that appears most in trips is : ' ||en_station);
+
+    -- top exit station
+    SELECT station_name INTO ex_station FROM trips, station
+    WHERE station.station_id = trips.exit_id
+    GROUP BY station_name
+    HAVING COUNT(*) = (SELECT MAX(COUNT(*)) FROM trips GROUP BY exit_id);
+    dbms_output.put_line('Exit station that appears most in trips is : ' ||ex_station);
+EXCEPTION
+  -- default exceptions
+  WHEN no_data_found THEN dbms_output.put_line ('No data found');
+  WHEN too_many_rows THEN dbms_output.put_line ('Too many rows returned');
+END;
+/
+exec total_numbers;

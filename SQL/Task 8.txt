@@ -1,0 +1,38 @@
+/** Creates a procedure that lists all schedules departing at a station with X minutes after a given time
+    @param t The given time in hours and minutes.
+    @param x The time in minutes after the given time.
+    @param s The station name. */
+CREATE OR REPLACE PROCEDURE DepartingStation(t INTERVAL DAY TO SECOND, x INTERVAL DAY TO SECOND, s VARCHAR)
+AS
+  ss_schedule_id schedule_station.schedule_id%type; -- variable to hold scheduleid
+  l_name train_line.line_name%type; -- variable to hold linename
+  sc_direction schedule.direction%type; -- variable to hold direction
+  ss_arrival schedule_station.schedule_arrival%type; -- varaible to hold scheduledarrival
+BEGIN
+  SELECT ss.schedule_id, tl.line_name, sc.direction, ss.schedule_arrival
+  INTO ss_schedule_id, l_name, sc_direction, ss_arrival
+  FROM schedule_station ss, schedule sc, train_line tl, station s
+  WHERE ss.schedule_arrival BETWEEN t AND t+x
+  AND s.station_name = s
+  AND sc.schedule_id = ss.schedule_id
+  AND sc.line_id = tl.line_id
+  AND s.station_id = ss.station_id;
+  dbms_output.put_line('Schedule ID: ' || ss_schedule_id || ', Line Name: ' || l_name || ', Direction: ' || sc_direction || 
+   ', Arrival: ' || ss_arrival); -- print
+EXCEPTION
+  WHEN no_data_found THEN
+    dbms_output.put_line('Wrong station name');
+  WHEN too_many_rows THEN
+    dbms_output.put_line('Too many rows');
+END;
+
+
+SET SERVEROUTPUT ON;
+EXEC DepartingStation(INTERVAL '6' HOUR, INTERVAL '40' MINUTE, 'Owings Mills Station'); 
+
+SELECT ss.schedule_id, tl.line_name, sc.direction, ss.schedule_arrival, s.station_name
+FROM schedule_station ss, schedule sc, train_line tl, station s
+WHERE sc.schedule_id = ss.schedule_id
+AND sc.line_id = tl.line_id
+AND s.station_id = ss.station_id;
+
